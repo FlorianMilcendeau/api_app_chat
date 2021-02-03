@@ -51,11 +51,12 @@ module.exports = (server) => {
 
       const { id } = message.dataValues;
 
+      console.log(picture);
       // Sent the messages to the intended channel.
       io.in(data.channelId).emit('ADD_MESSAGE', {
         id,
         ...data.content,
-        author: { ...author, ...picture },
+        author: { ...author, picture },
       });
     });
   });
