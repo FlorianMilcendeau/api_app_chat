@@ -6,7 +6,7 @@ const { Message, User } = require('../models');
 module.exports = (server) => {
   const option = {
     cors: {
-      origin: 'http://localhost:3000',
+      origin: process.env.CLIENT_URL,
       methods: ['GET', 'POST', 'PUT', 'DELETE'],
       credentials: true,
     },
@@ -26,14 +26,14 @@ module.exports = (server) => {
   });
 
   io.on('connection', (socket) => {
-    console.log(`new connection of ${socket.user.name}`);
-
+    // Listen if anyone joins the channel.
     socket.on('JOIN_ROOM', (room) => {
       if (!socket.rooms.has(room)) {
         socket.join(room);
       }
     });
 
+    // listen to incoming messages.
     socket.on('ADD_MESSAGE', async (data) => {
       const {
         channelId,
@@ -51,6 +51,7 @@ module.exports = (server) => {
 
       const { id } = message.dataValues;
 
+      // Sent the messages to the intended channel.
       io.in(data.channelId).emit('ADD_MESSAGE', {
         id,
         content: { ...content, ...picture },
