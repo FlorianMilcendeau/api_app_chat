@@ -1,7 +1,7 @@
 const socketIO = require('socket.io');
 
 const { authenticateJwt } = require('../middlewares/socketMiddleware');
-const { Message, User } = require('../models');
+const controllerMessage = require('./message');
 
 module.exports = (server) => {
   const option = {
@@ -33,38 +33,7 @@ module.exports = (server) => {
       }
     });
 
-    // listen to incoming messages.
-    socket.on('ADD_MESSAGE', async (data) => {
-      const {
-        channelId,
-        content: { author, content, created_at },
-      } = data;
-
-      const message = await Message.create({
-        channel_id: channelId,
-        user_id: author.id,
-        content,
-        created_at,
-      });
-
-      const { picture } = await User.findByPk(author.id);
-
-      const { id } = message.dataValues;
-
-      // Sent the messages to the intended channel.
-      io.in(data.channelId).emit('ADD_MESSAGE', {
-        id,
-        ...data.content,
-        author: { ...author, picture },
-      });
-    });
-
-    socket.on('DELETE_MESSAGE', async (data) => {
-      const { channelId, messageId } = data;
-
-      await Message.destroy({ where: { id: messageId } });
-
-      io.in(channelId).emit('UPDATE_MESSAGE', messageId);
-    });
+    // Messages controller.
+    controllerMessage(socket, io);
   });
 };
