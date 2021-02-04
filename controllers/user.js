@@ -66,12 +66,18 @@ router.put(
         updateUser.picture = `${process.env.SERVER_URL}/${req.file.path}`;
       }
 
+      // If no fields have been completed.
+      if (!Object.keys(updateUser).length) {
+        return res.status(406).json({
+          info: { success: false, message: 'No fields have been completed' },
+        });
+      }
+
       // Update User
       await userModel.update(
         { ...updateUser },
         {
           where: id,
-          raw: true,
         }
       );
 
@@ -79,7 +85,7 @@ router.put(
 
       const { password, ...currentUser } = updatedUser;
 
-      res
+      return res
         .status(200)
         .json({ info: { success: true }, user: { ...currentUser } });
     } catch (error) {
