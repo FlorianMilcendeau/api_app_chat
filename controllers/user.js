@@ -83,7 +83,7 @@ router.put(
 
       const updatedUser = await userModel.findByPk(id.id);
 
-      const { password, ...currentUser } = updatedUser;
+      const { password, ...currentUser } = updatedUser.dataValues;
 
       return res
         .status(200)
