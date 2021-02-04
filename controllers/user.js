@@ -9,7 +9,11 @@ const storage = multer.diskStorage({
   destination: 'uploads/',
   filename: filenameMulter,
 });
-const upload = multer({ storage, fileFilter: multerFilter });
+const upload = multer({
+  storage,
+  fileFilter: multerFilter,
+  limits: { fileSize: 5000000 },
+});
 
 const checkToken = require('../middlewares/checkToken');
 const verifyUser = require('../middlewares/verifyUser');
