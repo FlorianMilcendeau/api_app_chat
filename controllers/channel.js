@@ -25,7 +25,7 @@ router.get('/', checkToken, async (req, res) => {
     // Find all channel's members.
     const members = await User.findAll({
       raw: true,
-      attributes: ['id', 'name'],
+      attributes: ['id', 'name', 'picture'],
       include: {
         model: Member,
         required: true,
