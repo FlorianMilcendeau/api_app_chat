@@ -1,7 +1,5 @@
 /node_modules
 
-/uploads
-
 # PRIVATE KEY
 id_rsa_priv.pem
 

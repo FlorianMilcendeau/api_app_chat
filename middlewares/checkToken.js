@@ -1,11 +1,10 @@
-const path = require('path');
-const fs = require('fs');
 const jwt = require('jsonwebtoken');
 
 const { extractBearerToken } = require('../utils/JWT');
 
-const pathToPubKey = path.join(__dirname, '../', 'id_rsa_pub.pem');
-const PUBLIC_KEY = fs.readFileSync(pathToPubKey, 'utf-8');
+const { ID_RSA_PUBLIC } = process.env;
+
+const PUBLIC_KEY = ID_RSA_PUBLIC.replace(/\\n/g, '\n');
 
 const checkToken = (req, res, next) => {
   // Get token.
