@@ -1,10 +1,8 @@
-const fs = require('fs');
-const path = require('path');
 const jwt = require('jsonwebtoken');
 
-/** Read private key */
-const pathToPrivKey = path.join(__dirname, '../../', 'id_rsa_priv.pem');
-const PRIV_KEY = fs.readFileSync(pathToPrivKey, 'utf-8');
+const { ID_RSA_PRIVATE } = process.env;
+
+const PRIVATE_KEY = ID_RSA_PRIVATE.replace(/\\n/g, '\n');
 
 /** Generate Json Web Token
  *
@@ -28,7 +26,7 @@ const generateToken = (user) => {
   const expiresIn = Date.now() + 1000 * (60 * 60) * 24 * 7;
 
   // token generated and singed.
-  const signedToken = jwt.sign(payload, PRIV_KEY, {
+  const signedToken = jwt.sign(payload, PRIVATE_KEY, {
     expiresIn,
     algorithm: 'RS256',
   });
