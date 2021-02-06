@@ -1,7 +1,8 @@
 const socketIO = require('socket.io');
 
 const { authenticateJwt } = require('../middlewares/socketMiddleware');
-const controllerMessage = require('./message');
+const messageHandler = require('./messageHandler');
+const channelHandler = require('./channelHandler');
 
 module.exports = (server) => {
   const option = {
@@ -26,14 +27,10 @@ module.exports = (server) => {
   });
 
   io.on('connection', (socket) => {
-    // Listen if anyone joins the channel.
-    socket.on('JOIN_ROOM', (room) => {
-      if (!socket.rooms.has(room)) {
-        socket.join(room);
-      }
-    });
+    // Channel handling.
+    channelHandler(socket);
 
-    // Messages controller.
-    controllerMessage(socket, io);
+    // Messages handling.
+    messageHandler(socket, io);
   });
 };

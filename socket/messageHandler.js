@@ -32,6 +32,7 @@ module.exports = async (socket, io) => {
     }
   });
 
+  // listen to incoming messages deleted.
   socket.on('DELETE_MESSAGE', async (data) => {
     const { channelId, messageId, authorId } = data;
 
