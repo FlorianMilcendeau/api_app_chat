@@ -2,9 +2,11 @@
     "name": "api_auth",
     "version": "0.0.0",
     "private": true,
+    "heroku-run-build-script": true,
     "scripts": {
-        "start": "node -r dotenv/config ./bin/www",
-        "start:dev": "nodemon -r dotenv/config ./bin/www"
+        "start": "node -r dotenv/config ./dist/www.js",
+        "start:dev": "nodemon -r dotenv/config ./build/index.js",
+        "build": "rm -rf dist && parcel build ./bin/www.js --target node"
     },
     "dependencies": {
         "bcrypt": "^5.0.0",
@@ -26,11 +28,15 @@
         "socket.io": "^3.0.4"
     },
     "devDependencies": {
+        "@babel/cli": "^7.12.13",
+        "@babel/core": "^7.12.13",
+        "@babel/preset-flow": "^7.12.13",
         "eslint": "^7.15.0",
         "eslint-config-airbnb-base": "^14.2.1",
         "eslint-config-prettier": "^7.0.0",
         "eslint-plugin-import": "^2.22.1",
         "eslint-plugin-prettier": "^3.3.0",
+        "parcel-bundler": "^1.12.4",
         "prettier": "^2.2.1"
     }
 }
