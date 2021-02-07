@@ -5,7 +5,7 @@
     "heroku-run-build-script": true,
     "scripts": {
         "start": "node -r dotenv/config ./dist/www.js",
-        "start:dev": "nodemon -r dotenv/config ./build/index.js",
+        "start:dev": "nodemon -r dotenv/config ./bin/www.js",
         "build": "rm -rf dist && parcel build ./bin/www.js --target node"
     },
     "dependencies": {
