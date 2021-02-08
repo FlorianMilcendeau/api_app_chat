@@ -5,3 +5,7 @@ id_rsa_priv.pem
 
 #environnement
 .env
+
+# production
+dist
+.cache
