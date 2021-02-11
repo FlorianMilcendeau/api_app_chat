@@ -61,8 +61,11 @@ router.get('/', checkToken, async (req, res) => {
 /** Get channel's message */
 router.get('/:id/messages', checkToken, async (req, res) => {
   const { id } = req.params;
+  const { page = 0 } = req.query;
 
   const messageFound = await Message.findAll({
+    offset: page * 10,
+    limit: 10,
     raw: true,
     attributes: ['id', 'content', 'created_at'],
     include: [
@@ -73,14 +76,15 @@ router.get('/:id/messages', checkToken, async (req, res) => {
       },
       { model: User, attributes: ['id', 'name', 'picture'] },
     ],
+    order: [['created_at', 'DESC']],
   });
 
   if (!messageFound.length > 0) {
     return res.status(204).json({ message: 'No message yet' });
   }
 
-  const messages = messageFound.map(
-    ({ id: idMessage, content, created_at, ...message }) => ({
+  const messages = messageFound
+    .map(({ id: idMessage, content, created_at, ...message }) => ({
       id: idMessage,
       author: {
         id: message['user.id'],
@@ -89,8 +93,8 @@ router.get('/:id/messages', checkToken, async (req, res) => {
       },
       content,
       created_at,
-    })
-  );
+    }))
+    .reverse();
 
   return res.status(200).json(messages);
 });
