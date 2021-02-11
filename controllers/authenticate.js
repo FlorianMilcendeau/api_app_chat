@@ -32,7 +32,7 @@ router.post('/register', async (req, res) => {
     const hash = await genPassword(password);
 
     const newUser = await userModel.create({
-      name: email,
+      name: email.split('@')[0], // Waiting for the name field on the client side.
       password: hash,
       email,
       bio: null,
@@ -64,6 +64,13 @@ router.post('/register', async (req, res) => {
       role: 'chatter',
       user_id: user.id,
       channel_id: 2,
+    });
+
+    // subcription to Back-end developer.
+    await Member.create({
+      role: 'chatter',
+      user_id: user.id,
+      channel_id: 11,
     });
 
     // token generated.
