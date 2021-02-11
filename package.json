@@ -5,7 +5,7 @@
     "heroku-run-build-script": true,
     "scripts": {
         "start": "node -r dotenv/config ./dist/www.js",
-        "start:dev": "nodemon -r dotenv/config ./build/index.js",
+        "start:dev": "nodemon -r dotenv/config ./bin/wwww.js",
         "build": "rm -rf dist && parcel build ./bin/www.js --target node"
     },
     "dependencies": {
@@ -22,7 +22,6 @@
         "morgan": "~1.10.0",
         "multer": "^1.4.2",
         "mysql2": "^2.2.5",
-        "nodemon": "^2.0.4",
         "npm": "^6.14.11",
         "sequelize": "^6.3.5",
         "socket.io": "^3.0.4"
