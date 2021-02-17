@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  db:
+    build: ./docker/database
+    container_name: db
+    restart: always
+    expose:
+      - 3306
+  api:
+    build: ./docker/api
+    depends_on:
+      - db
+    env_file: ./.env
+    ports:
+      - 8000:8000
+    expose:
+      - 8000
